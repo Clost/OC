@@ -124,7 +124,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
         //readFromBundle(bundle, "isos", Preview.getISOPreferenceKey(), "auto", "preference_category_camera_effects");
         //readFromBundle(bundle, "exposures", "preference_exposure", "0", "preference_category_camera_effects");
 
-        boolean has_antibanding = false;
+       /*boolean has_antibanding = false;
         String [] antibanding_values = bundle.getStringArray("antibanding");
         if( antibanding_values != null && antibanding_values.length > 0 ) {
             String [] antibanding_entries = bundle.getStringArray("antibanding_entries");
@@ -173,7 +173,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             Preference pref = findPreference(PreferenceKeys.CameraNoiseReductionModePreferenceKey);
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_processing_settings");
             pg.removePreference(pref);
-        }
+        }*/
 
         final boolean supports_face_detection = bundle.getBoolean("supports_face_detection");
         if( MyDebug.LOG )
@@ -564,11 +564,11 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             pg.removePreference(pref);
         }
 
-        if( !using_android_l ) {
+        /*if( !using_android_l ) {
             Preference pref = findPreference("preference_focus_assist");
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_preview");
             pg.removePreference(pref);
-        }
+        }*/
 
         if( !supports_flash ) {
             Preference pref = findPreference("preference_show_cycle_flash");
@@ -582,11 +582,11 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             pg.removePreference(pref);
         }
 
-        if( !supports_raw ) {
+        /*if( !supports_raw ) {
             Preference pref = findPreference("preference_show_cycle_raw");
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_gui");
             pg.removePreference(pref);
-        }
+        }*/
 
         if( !supports_white_balance_lock ) {
             Preference pref = findPreference("preference_show_white_balance_lock");
@@ -615,17 +615,17 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
         setSummary("preference_save_video_prefix");
         setSummary("preference_textstamp");
 
-        if( !using_android_l ) {
+        /*if( !using_android_l ) {
             Preference pref = findPreference("preference_show_iso");
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_preview");
             pg.removePreference(pref);
-        }
+        }*/
 
         final boolean supports_preview_bitmaps = bundle.getBoolean("supports_preview_bitmaps");
         if( MyDebug.LOG )
             Log.d(TAG, "supports_preview_bitmaps: " + supports_preview_bitmaps);
 
-        if( !supports_preview_bitmaps ) {
+       /* if( !supports_preview_bitmaps ) {
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_preview");
 
             Preference pref = findPreference("preference_histogram");
@@ -639,7 +639,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 
             pref = findPreference("preference_focus_peaking_color");
             pg.removePreference(pref);
-        }
+        }*/
 
         final boolean supports_photo_video_recording = bundle.getBoolean("supports_photo_video_recording");
         if( MyDebug.LOG )
@@ -719,9 +719,9 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                 camera_api_entries.clear();
             }
 
-            readFromBundle(camera_api_values.toArray(new String[0]), camera_api_entries.toArray(new String[0]), "preference_camera_api", PreferenceKeys.CameraAPIPreferenceDefault, "preference_category_online");
+//            readFromBundle(camera_api_values.toArray(new String[0]), camera_api_entries.toArray(new String[0]), "preference_camera_api", PreferenceKeys.CameraAPIPreferenceDefault, "preference_category_online");
 
-            if( camera_api_values.size() >= 2 ) {
+           /* if( camera_api_values.size() >= 2 ) {
                 final Preference pref = findPreference("preference_camera_api");
                 pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
                     @Override
@@ -742,7 +742,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                         return true;
                     }
                 });
-            }
+            }*/
         }
         /*final boolean supports_camera2 = bundle.getBoolean("supports_camera2");
         if( MyDebug.LOG )
@@ -769,7 +769,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             pg.removePreference(pref);
         }*/
 
-        {
+        /*{
             final Preference pref = findPreference("preference_online_help");
             pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 @Override
@@ -853,11 +853,11 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                     return false;
                 }
             });
-        }
+        }*/
 
-        // end licences
+        //end licences
 
-        {
+       /* {
             ListPreference pref = (ListPreference)findPreference("preference_ghost_image");
 
             if( Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ) {
@@ -878,7 +878,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                     return true;
                 }
             });
-        }
+        }*/
 
         /*{
         	EditTextPreference edit = (EditTextPreference)findPreference("preference_save_location");
@@ -925,7 +925,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_camera_controls_more");
             pg.removePreference(pref);
         }
-        else {
+       /* else {
             final Preference pref = findPreference("preference_using_saf");
             pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 @Override
@@ -953,9 +953,9 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                     return false;
                 }
             });
-        }
+        }*/
 
-        {
+        /*{
             final Preference pref = findPreference("preference_calibrate_level");
             pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 @Override
@@ -1010,7 +1010,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                     return false;
                 }
             });
-        }
+        }*/
 
         /*{
             final Preference pref = findPreference("preference_donate");
