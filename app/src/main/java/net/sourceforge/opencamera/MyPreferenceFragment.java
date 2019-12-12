@@ -570,7 +570,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             pg.removePreference(pref);
         }*/
 
-        if( !supports_flash ) {
+        /*if( !supports_flash ) {
             Preference pref = findPreference("preference_show_cycle_flash");
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_gui");
             pg.removePreference(pref);
@@ -582,11 +582,11 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             pg.removePreference(pref);
         }
 
-        /*if( !supports_raw ) {
+        if( !supports_raw ) {
             Preference pref = findPreference("preference_show_cycle_raw");
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_gui");
             pg.removePreference(pref);
-        }*/
+        }
 
         if( !supports_white_balance_lock ) {
             Preference pref = findPreference("preference_show_white_balance_lock");
@@ -598,7 +598,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             Preference pref = findPreference("preference_show_auto_level");
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_gui");
             pg.removePreference(pref);
-        }
+        }*/
 
         if( Build.VERSION.SDK_INT < Build.VERSION_CODES.N ) {
             // the required ExifInterface tags requires Android N or greater
