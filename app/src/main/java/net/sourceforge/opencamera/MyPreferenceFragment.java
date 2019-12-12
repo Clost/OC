@@ -195,7 +195,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_camera_controls_more");
             pg.removePreference(pref);
         }
-
+//
         final int preview_width = bundle.getInt("preview_width");
         final int preview_height = bundle.getInt("preview_height");
         final int [] preview_widths = bundle.getIntArray("preview_widths");
