@@ -170,8 +170,8 @@ public class UploadActivity extends ListActivity {
          */
         simpleAdapter = new SimpleAdapter(this, transferRecordMaps,
                 R.layout.record_item, new String[] {
-                        "checked", "fileName", "progress", "bytes", "state", "percentage"
-                },
+                "checked", "fileName", "progress", "bytes", "state", "percentage"
+        },
                 new int[] {
                         R.id.radioButton1, R.id.textFileName, R.id.progressBar1, R.id.textBytes,
                         R.id.textState, R.id.textPercentage
@@ -179,7 +179,7 @@ public class UploadActivity extends ListActivity {
         simpleAdapter.setViewBinder(new ViewBinder() {
             @Override
             public boolean setViewValue(View view, Object data,
-                    String textRepresentation) {
+                                        String textRepresentation) {
                 switch (view.getId()) {
                     case R.id.radioButton1:
                         RadioButton radio = (RadioButton) view;
@@ -469,6 +469,7 @@ public class UploadActivity extends ListActivity {
             return;
         }
 
+        Log.d("File Path", filePath);
         File file = new File(filePath);
         TransferObserver observer = transferUtility.upload(
                 file.getName(),

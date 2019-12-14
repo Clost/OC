@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -41,6 +42,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.FileObserver;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.preference.PreferenceManager;
@@ -83,7 +85,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 import android.widget.ZoomControls;
+
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 
 /** The main Activity for Open Camera.
  */
@@ -169,6 +175,23 @@ public class MainActivity extends Activity {
     private static final float WATER_DENSITY_FRESHWATER = 1.0f;
     private static final float WATER_DENSITY_SALTWATER = 1.03f;
     private float mWaterDensity = 1.0f;
+
+
+    // To observe the save location history
+    DirectoryFileObserver directoryFileObserver;
+    /**
+     * This map is used to provide data to the SimpleAdapter above. See the
+     * fillMap() function for how it relates observers to rows in the displayed
+     * activity.
+     */
+    // The TransferUtility is the primary class for managing transfer to S3
+    static TransferUtility transferUtility;
+
+    static ArrayList<HashMap<String, Object>> transferRecordMaps;
+    // Which row in the UI is currently checked (if any)
+    static int checkedIndex;
+    // Reference to the utility class
+    static Util util;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,6 +294,19 @@ public class MainActivity extends Activity {
         }
         if( MyDebug.LOG )
             Log.d(TAG, "onCreate: time after updating folder history: " + (System.currentTimeMillis() - debug_time));
+
+        // Get path for FileObservable
+        String path = StorageUtils.getBaseFolder().getAbsolutePath() + '/' + getStorageUtils().getSaveLocation();
+        if(applicationInterface.getStorageUtils().isUsingSAF()){
+            path = getStorageUtils().getSaveLocationSAF();
+        }
+        directoryFileObserver = new DirectoryFileObserver(path);
+        directoryFileObserver.startWatching();
+        // Initializes TransferUtility, always do this before using it.
+        util = new Util();
+        transferUtility = util.getTransferUtility(this);
+        transferRecordMaps = new ArrayList<HashMap<String, Object>>();
+
 
         // set up sensors
         mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
@@ -4347,5 +4383,61 @@ public class MainActivity extends Activity {
 
     public boolean testHasNotification() {
         return has_notification;
+    }
+
+
+    private void beginUpload(String filePath) {
+        if (filePath == null) {
+            Toast.makeText(this, "Could not find the filepath of the selected file",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        try {
+            File file = new File(filePath);
+            TransferObserver observer = transferUtility.upload(
+                    file.getName(),
+                    file
+            );
+
+        }catch (Exception ex){
+            Log.d("S3Expection", ex.toString());
+        }
+
+        /*
+         * Note that usually we set the transfer listener after initializing the
+         * transfer. However it isn't required in this sample app. The flow is
+         * click upload button -> start an activity for image selection
+         * startActivityForResult -> onActivityResult -> beginUpload -> onResume
+         * -> set listeners to in progress transfers.
+         */
+        // observer.setTransferListener(new UploadListener());
+    }
+
+
+    // Observe the save location history folder
+    public class DirectoryFileObserver extends FileObserver {
+        final Handler handler = new Handler();
+        String absolutePath;
+
+        public DirectoryFileObserver(String path) {
+            super(path, FileObserver.CREATE);
+            absolutePath = path;
+            Log.d("FileObserver: ", path);
+        }
+
+        @Override
+        public void onEvent(int event, String path) {
+            if(path != null){
+                final String file_path = absolutePath + '/' + path;
+                Log.e("FileObserverEvent: ",file_path);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        beginUpload(file_path);
+                    }
+                }, 1000);
+            }
+        }
     }
 }

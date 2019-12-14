@@ -15,6 +15,7 @@
 
 package net.sourceforge.opencamera;
 
+
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
